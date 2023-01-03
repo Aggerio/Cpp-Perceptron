@@ -40,28 +40,28 @@ for 2 layers we will require three weights array
 
 size of the elements in the array will be - 
 
-``
+```cpp
 std::vector<std::vector<float>> weights(HIDDEN_LAYERS + 1);
-``
+```
 
 the first element will contain the weights same as the no. of inputs 
 
 so 
-``
+```cpp
 std::vector<float> layer1_special_case(INPUTS);
 weights.push_back(layer1_special_case)
-``
+```
 
 Then we can fill the rest of them with the same no. of weights as the no. of
 neurons
 
-``
+```cpp
 for(int i = 0; i < HIDDEN_LAYERS; ++i)
 {
   std::vector<float> temp1(NEURON_PER_LAYER);
   weights.push_back(temp1);
 }
-``
+```
 
 Now we have our weights 
 
@@ -131,7 +131,7 @@ Therefore Calculating the Values of Each layer of neurons
           o1 = sigma(L21 * w311 + L22 * w312 + L23 * w313) + b
           o2 = sigma(L21 * w321 + L22 * w322 + L23 * w323) + b
 
-``
+```cpp
 std::vector<float> inputs {i1,i2}; //Given vector of inputs
 std::vector<std::vector<Neuron>> layers; // Initialize to required size
 for(int i = 0; i < HIDDEN_LAYERS+1; ++i)
@@ -155,7 +155,7 @@ for(int i = 0; i < HIDDEN_LAYERS+1; ++i)
   }
   layers.push_back(temp_Neuron_layer);
 }
-``
+```
 
 
 
