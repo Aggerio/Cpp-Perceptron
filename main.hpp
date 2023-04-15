@@ -15,6 +15,7 @@
 #define OUTPUTS 3
 // #define NEURON_PER_LAYER 784
 #define NEURON_PER_LAYER 3
+#define LEARNING_RATE 0.004
 #define HIDDEN_LAYERS 2
 #define ACTIVATION_FUNCTION sigmoid_activation_function
 #define DERIVATIVE_ACTIVATION_FUNCTION derivative_sigmoid
