@@ -113,8 +113,10 @@ int main()
 
   std::vector<float> inputs = {0.3245, 0.213};
   std::vector<float> output = MLP(inputs, weights, layers);
+  print_weights(weights);
   std::vector<float> targets = {1, 0, 0};
-  backpropagation(inputs, weights, targets, LEARNING_RATE);
+  backpropagation(inputs, weights, targets, 0.4);
+  print_weights(weights);
 
   for (int i = 0; i < OUTPUTS; ++i) {
     std::cout << "Neuron " << i + 1 << ": " << output[i] << "\n";

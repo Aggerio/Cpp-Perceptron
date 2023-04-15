@@ -16,3 +16,4 @@ float derivative_sigmoid(float inp);
 void random_weights(std::vector<std::vector<std::vector<float>>> &vec);
 
 std::vector<std::vector<float>> generate_output(std::vector<float> vec);
+void print_weights(std::vector<std::vector<std::vector<float>>> weights);

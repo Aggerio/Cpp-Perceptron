@@ -79,3 +79,14 @@ float derivative_sigmoid(float inp)
   return sigmoid_activation_function(inp) *
 	 (1 - sigmoid_activation_function(inp));
 }
+
+void print_weights(std::vector<std::vector<std::vector<float>>> weights)
+{
+  for (int i = 0; i < weights.size(); ++i) {
+    for (int j = 0; j < weights[i].size(); ++j) {
+      for (int k = 0; k < weights[i][j].size(); ++k) {
+	printf("Weights [%d][%d][%d]: %f\n", i, j, k, weights[i][j][k]);
+      }
+    }
+  }
+}
