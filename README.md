@@ -1,52 +1,53 @@
-the goal is to make a simple perceptron which can distinguish 
+the goal is to make a simple perceptron which can distinguish
 
 hand written digits
 
-input - 28 x 28 
+input - 28 x 28
 
-output - 10 
+output - 10
 
-middle layers - I am going with 2, should be more than enough 
+middle layers - I am going with 2, should be more than enough
 
-so that gives me about 7840 neurons in between 
-each neuron has about 784 inputs so that means about 784 weight per neuron 
+so that gives me about 7840 neurons in between
+each neuron has about 784 inputs so that means about 784 weight per neuron
 
-that gives about 784 * 784 roughly weights  = 614656 weights
+that gives about 784 \* 784 roughly weights = 614656 weights
 
 gonna train them with backpropagation
 
-//NEURON - 
+//NEURON -
 
-Y  = sigma((weight * input) + bias)
+Y = sigma((weight \* input) + bias)
 
-//ACTIVATION FUNCTION = 
+//ACTIVATION FUNCTION =
 
 Probably gonna go with relu activation function
 
 // MIDDLE LAYER PLANNING
 
-Gonna do a seperate input neuron and seperate output neuron 
+Gonna do a seperate input neuron and seperate output neuron
 
-The 1st layer will be custom fed the input in a for loop 
+The 1st layer will be custom fed the input in a for loop
 
 The following layers will work backwards from the 1st layer
 
-A seperate output layer will be used to translate the output from the last 
+A seperate output layer will be used to translate the output from the last
 layer to desired no. of outputs
 
 //NOTES --> Weights Implementation
 
-for 2 layers we will require three weights array 
+for 2 layers we will require three weights array
 
-size of the elements in the array will be - 
+size of the elements in the array will be -
 
 ```cpp
 std::vector<std::vector<float>> weights(HIDDEN_LAYERS + 1);
 ```
 
-the first element will contain the weights same as the no. of inputs 
+the first element will contain the weights same as the no. of inputs
 
-so 
+so
+
 ```cpp
 std::vector<float> layer1_special_case(INPUTS);
 weights.push_back(layer1_special_case)
@@ -63,51 +64,52 @@ for(int i = 0; i < HIDDEN_LAYERS; ++i)
 }
 ```
 
-Now we have our weights 
+Now we have our weights
 
 //NOTES --> Evaluating the result and setting the output neuron to that
 
-Assumptions --> 
-1) For example we have a 2 3 3 2 neural network we have 2 i/p, 2 hidden
-layers, and 2 output
+Assumptions -->
 
-Notation --> 
-      output 1 --> o1
-      output 2 --> o2
-      
-      input 1 --> i1 
+1. For example we have a 2 3 3 2 neural network we have 2 i/p, 2 hidden
+   layers, and 2 output
+
+Notation -->
+output 1 --> o1
+output 2 --> o2
+
+      input 1 --> i1
       input 2 --> i2
       bias per neuron --> b
-      Activation function --> sigma 
+      Activation function --> sigma
 
 every weight is signified by a 3 digit following it
-      1st) --> The layer
-      2nd) --> The no. of the neuron in that layer from the top
-      3rd) --> The correspoding no. of weight of the neuron
+1st) --> The layer
+2nd) --> The no. of the neuron in that layer from the top
+3rd) --> The correspoding no. of weight of the neuron
 
           weights for the 1st neuron of 1st layer --> w111, w112
           weights for the 2nd neuron of 1st layer --> w121, w122
           weights for the 3rd neuron of 1st layer --> w131, w132
 
 
-          weights for the 1st neuron of 2nd layer --> w211, w212, w213 
+          weights for the 1st neuron of 2nd layer --> w211, w212, w213
           weights for the 2nd neuron of 2nd layer --> w221, w222, w223
           weights for the 3rd neuron of 2nd layer --> w231, w232, w233
 
-          weights for the 1st neuron of 3rd layer --> w311, w312, w313 
+          weights for the 1st neuron of 3rd layer --> w311, w312, w313
           weights for the 2nd neuron of 3rd layer --> w321, w322, w323
 
 Value of Neuron in each layer -->
 
-Represented by L following two digits 
-      
+Represented by L following two digits
+
       1st) --> Gives the layer
       2nd) --> Gives the no. of the neuron in the layer from the top
-          
+
           Value of neuron in Layer 1 and at position 1 --> L11
           Value of neuron in Layer 1 and at position 2 --> L12
           Value of neuron in Layer 1 and at position 3 --> L13
-          
+
           Value of neuron in Layer 2 and at position 1 --> L21
           Value of neuron in Layer 2 and at position 2 --> L22
           Value of neuron in Layer 2 and at position 3 --> L23
@@ -118,7 +120,7 @@ Assuming we have inputs --> std::vector<floats> inputs{i1,i2};
 
 then we can probably just use a for loop
 
-Therefore Calculating the Values of Each layer of neurons 
+Therefore Calculating the Values of Each layer of neurons
 
           L11 = sigma(i1 * w111 + i2 * w112 ) + b
           L12 = sigma(i1 * w121 + i2 * w122 ) + b
@@ -148,7 +150,7 @@ for(int i = 0; i < HIDDEN_LAYERS+1; ++i)
       }
       else
       {
-        temp_Neuron.value += layers[i-1][j] * weights[i][j][k]; 
+        temp_Neuron.value += layers[i-1][j] * weights[i][j][k];
       }
     }
     temp_Neuron_layer.push_back(Neuron);
@@ -157,26 +159,26 @@ for(int i = 0; i < HIDDEN_LAYERS+1; ++i)
 }
 ```
 
-
-
 // TODO - How the fuck do I implement backpropagation
 
 //NOTES --> Backpropagation
 
 Following the notation of Rojas 1996, chapter 7, backpropagation computes partial derivatives of the error function E (aka cost, aka loss)
 
-∂E/∂w[i,j] = delta[j] * o[i]
+∂E/∂w[i,j] = delta[j] \* o[i]
 where w[i,j] is the weight of the connection between neurons i and j, j being one layer higher in the network than i, and o[i] is the output (activation) of i (in the case of the "input layer", that's just the value of feature i in the training sample under consideration). How to determine delta is given in any textbook and depends on the activation function, so I won't repeat it here.
 
 These values can then be used in weight updates, e.g.
 
 // update rule for vanilla online gradient descent
-w[i,j] -= gamma * o[i] * delta[j]
+w[i,j] -= gamma _ o[i] _ delta[j]
 where gamma is the learning rate.
 
 The rule for bias weights is very similar, except that there's no input from a previous layer. Instead, bias is (conceptually) caused by input from a neuron with a fixed activation of 1. So, the update rule for bias weights is
 
-bias[j] -= gamma_bias * 1 * delta[j]
+bias[j] -= gamma_bias _ 1 _ delta[j]
 where bias[j] is the weight of the bias on neuron j, the multiplication with 1 can obviously be omitted, and gamma_bias may be set to gamma or to a different value. If I recall correctly, lower values are preferred, though I'm not sure about the theoretical justification of that.
 
 This is a stack overflow answer
+
+Ok finally understood it

@@ -7,9 +7,11 @@ float sigmoid_activation_function(float inp);
 
 void init_vec(std::vector<std::vector<float>> &vec, int n1, int n2);
 void init_vec(std::vector<std::vector<std::vector<float>>> &vec, int n1, int n2,
-              int n3);
+	      int n3);
 
 float random_float();
+
+float derivative_sigmoid(float inp);
 
 void random_weights(std::vector<std::vector<std::vector<float>>> &vec);
 
