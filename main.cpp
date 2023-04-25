@@ -5,23 +5,21 @@
 #include "Useful_Functions.hpp"
 
 std::vector<float> MLP(std::vector<float> inputs,
-		       std::vector<std::vector<std::vector<float>>> weights,
-		       std::vector<std::vector<Neuron>>& layers)
-{
+                       std::vector<std::vector<std::vector<float>>> weights,
+                       std::vector<std::vector<Neuron>> &layers) {
   std::vector<float> outp_vector;
   for (int i = 0; i < HIDDEN_LAYERS + 1; ++i) {
     std::vector<Neuron> temp_Neuron_layer;
     for (int j = 0; j < weights[i].size(); ++j) {
       Neuron temp_Neuron;
       for (int k = 0; k < weights[i][j].size(); ++k) {
-	if (i == 0) {
-	  temp_Neuron.value += inputs[k] * weights[i][j][k];
-	}
-	else {
-	  temp_Neuron.value += (ACTIVATION_FUNCTION(layers[i - 1][j].value) +
-				layers[i - 1][j].bias) *
-			       weights[i][j][k];
-	}
+        if (i == 0) {
+          temp_Neuron.value += inputs[k] * weights[i][j][k];
+        } else {
+          temp_Neuron.value += (ACTIVATION_FUNCTION(layers[i - 1][j].value) +
+                                layers[i - 1][j].bias) *
+                               weights[i][j][k];
+        }
       }
       temp_Neuron_layer.push_back(temp_Neuron);
     }
@@ -34,15 +32,14 @@ std::vector<float> MLP(std::vector<float> inputs,
     // layers[HIDDEN_LAYERS][i].bias)
     // << "\n";
     outp_vector.push_back((ACTIVATION_FUNCTION(layers[HIDDEN_LAYERS][i].value) +
-			   layers[HIDDEN_LAYERS][i].bias));
+                           layers[HIDDEN_LAYERS][i].bias));
   }
   return outp_vector;
 }
 
-void backpropagation(std::vector<float>& inputs,
-		     std::vector<std::vector<std::vector<float>>>& weights,
-		     const std::vector<float> targets, float learning_rate)
-{
+void backpropagation(std::vector<float> &inputs,
+                     std::vector<std::vector<std::vector<float>>> &weights,
+                     const std::vector<float> targets, float learning_rate) {
   assert(targets.size() == OUTPUTS);
   std::vector<std::vector<Neuron>> layers;
   // Perform forward pass
@@ -59,7 +56,7 @@ void backpropagation(std::vector<float>& inputs,
   for (int i = 0; i < weights[HIDDEN_LAYERS].size(); ++i) {
     for (int j = 0; j < weights[HIDDEN_LAYERS][i].size(); ++j) {
       weights[HIDDEN_LAYERS][i][j] +=
-	  learning_rate * output_errors[i] * layers[HIDDEN_LAYERS][i].value;
+          learning_rate * output_errors[i] * layers[HIDDEN_LAYERS][i].value;
     }
     layers[HIDDEN_LAYERS][i].bias += learning_rate * output_errors[i];
   }
@@ -70,28 +67,26 @@ void backpropagation(std::vector<float>& inputs,
     for (int j = 0; j < weights[i].size(); ++j) {
       float error = 0.0;
       for (int k = 0; k < weights[i + 1].size(); ++k) {
-	error += output_errors[k] * weights[i + 1][k][j];
+        error += output_errors[k] * weights[i + 1][k][j];
       }
       hidden_errors.push_back(
-	  error * DERIVATIVE_ACTIVATION_FUNCTION(layers[i][j].value));
+          error * DERIVATIVE_ACTIVATION_FUNCTION(layers[i][j].value));
     }
 
     for (int j = 0; j < weights[i].size(); ++j) {
       for (int k = 0; k < weights[i][j].size(); ++k) {
-	if (i == 0) {
-	  weights[i][j][k] += learning_rate * hidden_errors[j] * inputs[k];
-	}
-	else {
-	  weights[i][j][k] +=
-	      learning_rate * hidden_errors[j] * layers[i - 1][k].value;
-	}
+        if (i == 0) {
+          weights[i][j][k] += learning_rate * hidden_errors[j] * inputs[k];
+        } else {
+          weights[i][j][k] +=
+              learning_rate * hidden_errors[j] * layers[i - 1][k].value;
+        }
       }
       layers[i][j].bias += learning_rate * hidden_errors[j];
     }
   }
 }
-int main()
-{
+int main() {
   std::vector<std::vector<std::vector<float>>> weights;
 
   // Initializing the correct size of weights
